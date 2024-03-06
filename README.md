@@ -1,249 +1,66 @@
-# Todo Application
+Recipe Sharing Platform API
+This API allows users to perform CRUD operations on recipes. It is built using Node.js, Express.js, and MongoDB, with a focus on Object-Oriented Programming (OOP) concepts.
+
+Setup
+Clone the repository:
+
+bash
+Copy code
+git clone https://github.com/your-username/recipe-sharing-api.git
+Install dependencies:
+
+bash
+Copy code
+cd recipe-sharing-api
+npm install
+Set up your MongoDB database and update the connection string in server.js.
+
+Start the server:
+
+bash
+Copy code
+npm start
+API Endpoints
+User Registration
+POST /register
+Body: { "username": "your-username", "password": "your-password" }
+Registers a new user.
+User Login
+POST /login
+Body: { "username": "your-username", "password": "your-password" }
+Logs in an existing user and returns a JWT token for authentication.
+Create a Recipe
+POST /recipes
+Requires authentication (include JWT token in the Authorization header).
+Body: { "title": "Recipe Title", "description": "Recipe Description", "ingredients": ["Ingredient 1", "Ingredient 2"], "instructions": "Recipe Instructions", "image": "Recipe Image URL" }
+Creates a new recipe.
+Get All Recipes
+GET /recipes
+Returns a list of all recipes.
+Example Usage
+Register a new user:
+
+bash
+Copy code
+curl -X POST http://localhost:3000/register -d '{"username": "john", "password": "password"}' -H "Content-Type: application/json"
+Login to get a JWT token:
+
+bash
+Copy code
+curl -X POST http://localhost:3000/login -d '{"username": "john", "password": "password"}' -H "Content-Type: application/json"
+Create a new recipe (replace {TOKEN} with the JWT token):
+
+bash
+Copy code
+curl -X POST http://localhost:3000/recipes -d '{"title": "Spaghetti Carbonara", "description": "A classic Italian pasta dish", "ingredients": ["Spaghetti", "Eggs", "Bacon", "Parmesan Cheese"], "instructions": "Cook spaghetti, fry bacon, mix eggs and cheese, combine all ingredients", "image": "https://example.com/spaghetti-carbonara.jpg"}' -H "Content-Type: application/json" -H "Authorization: Bearer {TOKEN}"
+Get all recipes:
+
+bash
+Copy code
+curl http://localhost:3000/recipes
+OOP Concepts
+Encapsulation: The User and Recipe classes encapsulate data and methods related to users and recipes, respectively, providing a clean interface for interacting with these entities.
+Inheritance: While not explicitly demonstrated in this example, inheritance could be used to create specialized types of recipes or users (e.g., PremiumUser extending User).
+Polymorphism: The authenticate method in the User class demonstrates polymorphism, as it provides different implementations based on the specific user instance.
+Using OOP concepts helps to organize the code, improve maintainability, and make it easier to add new features in the future.
 
-Given an `app.js` file and an empty database file `todoApplication.db`.
-
-Create a table with the name `todo` with the following columns,
-
-**Todo Table**
-
-| Column   | Type    |
-| -------- | ------- |
-| id       | INTEGER |
-| todo     | TEXT    |
-| priority | TEXT    |
-| status   | TEXT    |
-
-and write APIs to perform operations on the table `todo`,
-
-<MultiLineNote>
-  
-  - Replace the spaces in URL with `%20`.
-  - Possible values for `priority` are `HIGH`, `MEDIUM`, and `LOW`.
-  - Possible values for `status` are `TO DO`, `IN PROGRESS`, and `DONE`.
-</MultiLineNote>
-
-### API 1
-
-#### Path: `/todos/`
-
-#### Method: `GET`
-
-- **Scenario 1**
-
-  - **Sample API**
-    ```
-    /todos/?status=TO%20DO
-    ```
-  - **Description**:
-
-    Returns a list of all todos whose status is 'TO DO'
-
-  - **Response**
-
-    ```
-    [
-      {
-        id: 1,
-        todo: "Watch Movie",
-        priority: "LOW",
-        status: "TO DO"
-      },
-      ...
-    ]
-    ```
-
-- **Scenario 2**
-
-  - **Sample API**
-    ```
-    /todos/?priority=HIGH
-    ```
-  - **Description**:
-
-    Returns a list of all todos whose priority is 'HIGH'
-
-  - **Response**
-
-    ```
-    [
-      {
-        id: 2,
-        todo: "Learn Node JS",
-        priority: "HIGH",
-        status: "IN PROGRESS"
-      },
-      ...
-    ]
-    ```
-
-- **Scenario 3**
-
-  - **Sample API**
-    ```
-    /todos/?priority=HIGH&status=IN%20PROGRESS
-    ```
-  - **Description**:
-
-    Returns a list of all todos whose priority is 'HIGH' and status is 'IN PROGRESS'
-
-  - **Response**
-
-    ```
-    [
-      {
-        id: 2,
-        todo: "Learn Node JS",
-        priority: "HIGH",
-        status: "IN PROGRESS"
-      },
-      ...
-    ]
-    ```
-
-- **Scenario 4**
-
-  - **Sample API**
-    ```
-    /todos/?search_q=Play
-    ```
-  - **Description**:
-
-    Returns a list of all todos whose todo contains 'Play' text
-
-  - **Response**
-
-    ```
-    [
-      {
-        id: 4,
-        todo: "Play volleyball",
-        priority: "MEDIUM",
-        status: "DONE"
-      },
-      ...
-    ]
-    ```
-
-### API 2
-
-#### Path: `/todos/:todoId/`
-
-#### Method: `GET`
-
-#### Description:
-
-Returns a specific todo based on the todo ID
-
-#### Response
-
-```
-{
-  id: 2,
-  todo: "Learn JavaScript",
-  priority: "HIGH",
-  status: "DONE"
-}
-```
-
-### API 3
-
-#### Path: `/todos/`
-
-#### Method: `POST`
-
-#### Description:
-
-Create a todo in the todo table,
-
-#### Request
-
-```
-{
-  "id": 10,
-  "todo": "Finalize event theme",
-  "priority": "LOW",
-  "status": "TO DO"
-}
-```
-
-#### Response
-
-```
-Todo Successfully Added
-```
-
-### API 4
-
-#### Path: `/todos/:todoId/`
-
-#### Method: `PUT`
-
-#### Description:
-
-Updates the details of a specific todo based on the todo ID
-
-- **Scenario 1**
-
-  - **Request**
-    ```
-    {
-      "status": "DONE"
-    }
-    ```
-  - **Response**
-
-    ```
-    Status Updated
-    ```
-
-- **Scenario 2**
-
-  - **Request**
-    ```
-    {
-      "priority": "HIGH"
-    }
-    ```
-  - **Response**
-
-    ```
-    Priority Updated
-    ```
-
-- **Scenario 3**
-
-  - **Request**
-    ```
-    {
-      "todo": "Some task"
-    }
-    ```
-  - **Response**
-
-    ```
-    Todo Updated
-    ```
-
-### API 5
-
-#### Path: `/todos/:todoId/`
-
-#### Method: `DELETE`
-
-#### Description:
-
-Deletes a todo from the todo table based on the todo ID
-
-#### Response
-
-```
-Todo Deleted
-```
-
-<br/>
-
-Use `npm install` to install the packages.
-
-**Export the express instance using the default export syntax.**
-
-**Use Common JS module syntax.**
